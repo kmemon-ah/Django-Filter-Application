@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Application</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+        integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+    </script>
+
+    <style>
+        .split {
+            height: 100%;
+            width: 80%;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            overflow-x: hidden;
+        }
+
+        .left {
+            left: 0;
+            background-color: rgb(224, 240, 166);
+            overflow-y: auto;
+        }
+
+        .right {
+            right: 0;
+            background-color: rgb(138, 236, 240);
+        }
+
+        .centered {
+            position: relative;
+            top: 45%;
+            left: 52%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .centered img {
+            width: 150px;
+            border-radius: 50%;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: none;
+            text-align: left;
+            padding: 8px;
+        }
+
+        
+            /* tr:nth-child(even) {
+            background-color: #dddddd;
+        } */
+
+
+    </style>
+
+</head>
+
+<body>
+    <div class="split left">
+
+        <h2 style="margin-left: 30px; color: rgb(5, 153, 84); text-decoration: underline;"><b>Filter Options</b></h2>
+
+        <div style="margin-left: 40px;">
+            <form method="POST">
+            {% csrf_token %}
+                <h4 style="text-decoration: underline;"><b>All Keywords</b></h4>
+                
+                {% for k, o in final_key.items %}
+                
+                <div class="form-check">
+                    <input type="checkbox" name="keys" class="check-input" value="{{k}}" id="{{k}}">
+                    <label class="form-check-label" for="{{k}}">
+                        {{k}}- <b style="color: green;">({{o}} Items Found)</b>
+                    </label>
+                </div>
+                {% endfor %}
+
+                <h3 style="text-decoration: underline;"><b>All Users</b></h3>
+                {% for u in user %}
+                <div class="form-check">
+                    <input type="checkbox" name = 'user' class="check-input" value="{{u}}" id="{{u}}">
+                    <label class="form-check-label" for="{{u}}">
+                        {{u}}
+                    </label>
+                </div>
+                {% endfor %}
+
+                <h3 style="text-decoration: underline;"><b>Time Range</b></h3>
+                <div class="form-check">
+                    <input type="checkbox" name="time" class="check-input" value="Yesterday" id="flex3" onclick="onlyOne(this)">
+                    <label class="form-check-label" for="flex3">
+                        See Data From Yesterday
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="time" class="check-input" value="Week" id="flex4" onclick="onlyOne(this)">
+                    <label class="form-check-label" for="flex4">
+                        See Data From Last Week
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="time" class="check-input" value="Month" id="flex5" onclick="onlyOne(this)">
+                    <label class="form-check-label" for="flex5">
+                        See Data From Last Month
+                    </label>
+                </div>
+
+                <h3 style="text-decoration: underline;"><b>Search Engine</b></h3>
+                {% for us in used %}
+                <div class="form-check">
+                    <input type="checkbox" name="used" class="check-input" value="{{us}}" id="{{us}}">
+                    <label class="form-check-label" for="{{us}}">
+                        {{us}}
+                    </label>
+                </div>
+                {% endfor %}
+
+                <h3 style="text-decoration: underline;"><b>Location</b></h3>
+                {% for l in location %}
+                <div class="form-check">
+                    <input type="checkbox" name="location" class="check-input" value="{{l}}" id="{{l}}">
+                    <label class="form-check-label" for="{{l}}">
+                        {{l}}
+                    </label>
+                </div>
+                {% endfor %}
+
+                <h3 style="text-decoration: underline;"><b>Device</b></h3>
+                {% for dv in device %}
+                <div class="form-check">
+                    <input type="checkbox" name="dv" class="check-input" value="{{dv}}" id="{{dv}}">
+                    <label class="form-check-label" for="{{dv}}">
+                        {{dv}}
+                    </label>
+                </div>
+                {% endfor %}
+
+                <button class="btn-info" type="submit" style="width: 20%; margin-bottom: 10px; color: black;">Filter
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="split right">
+        <h2 style="margin-left: 40%; color: rgb(70, 4, 250); text-decoration: underline;"><b>Data</b></h2>
+        <p style="color: red;" class="text-center"><b>Sorry, As my knowledge is very limited about frontend frameworks
+                and js, I couldn't filter data without reload!! :( </b></p>
+        <div style="margin-left: 40px;">
+            <table>
+                <tr>
+                    <th>Keyword</th>
+                    <th>User</th>
+                    <th>Date</th>
+                    <th>Search Engine</th>
+                    <th>Location</th>
+                    <th>Device</th>
+                </tr>
+                {% for key in keywords %}
+                <tr>
+                    <td>{{key.keyword}}</td>
+                    <td>{{key.user}}</td>
+                    <td>{{key.search_time.date}}</td>
+                    <td>{{key.used}}</td>
+                    <td>{{key.searched_from}}</td>
+                    <td>{{key.searched_via}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function onlyOne(checkbox) {
+    var checkboxes = document.getElementsByName('time')
+    checkboxes.forEach((item) => {
+        if (item !== checkbox) item.checked = false
+    })
+}
+    </script>
+</body>
+
+</html>
